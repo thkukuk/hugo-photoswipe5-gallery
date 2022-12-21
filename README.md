@@ -27,7 +27,6 @@ For example: `{{< gallery dir="/img/your-directory-of-images/" thumbnail-size="2
 - Load PhotoSwipe by calling the `{{< load-photoswipe >}}` shortcode anywhere in your post
 - Loads all of the `<figure>` elements in your post, regardless of where in your post they appear, into a lightbox/carousel style image gallery
 - Works with any existing `<figure>` elements/shortcodes in your posts
-- Does not require you to [pre-define the image sizes](http://photoswipe.com/documentation/faq.html#image-size). The shortcode determines the image size at build time.
 - Loads PhotoSwipe and the danamic caption plugin js and css libraries from the local server, so GDPR conform no meta data can be transmitted to a 3rd party hoster.
 
 ## Installation
