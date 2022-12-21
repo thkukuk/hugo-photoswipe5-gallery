@@ -1,0 +1,24 @@
+<!--
+Put this file in /layouts/shortcodes/load-photoswipe.html
+Documentation and licence at https://github.com/thkukuk/hugo-easy-gallery/
+-->
+
+<!-- prevent this shortcode from being loaded more than once per page -->
+{{ if not ($.Page.Scratch.Get "photoswipeloaded") }}
+  {{ $.Page.Scratch.Set "photoswipeloaded" 1 }}
+
+<!-- Photoswipe css/js libraries -->
+<script type="module">
+import PhotoSwipeLightbox from '/assets/photoswipe5/photoswipe-lightbox.esm.js';
+const lightbox = new PhotoSwipeLightbox({
+  gallery: '#photoswipe5-gallery',
+  children: 'a',
+  pswpModule: () => import('/assets/photoswipe5/photoswipe.esm.js'),
+  bgOpacity: 0.95,
+  loop: false,
+});
+lightbox.init();
+</script>
+
+<link rel="stylesheet" href="/assets/photoswipe5/photoswipe.css">
+{{ end -}}
