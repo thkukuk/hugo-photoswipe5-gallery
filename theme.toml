@@ -1,0 +1,10 @@
+name = "Easy Photoswipe 5.x Gallery"
+license = "MIT"
+licenselink = "https://github.com/thkukuk/hugo-photoswipe5-gallery/blob/master/LICENCE.md"
+description = "Image gallery in Hugo using shortcodes, with optional lightbox/carousel gadget using PhotoSwipe."
+homepage = "https://github.com/thkukuk/hugo-photoswipe5-gallery"
+min_version = "0.108.0"
+
+[author]
+name = "Thorsten Kukuk"
+homepage = "https://www.thkukuk.de/"
