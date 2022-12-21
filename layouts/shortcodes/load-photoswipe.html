@@ -10,6 +10,8 @@ Documentation and licence at https://github.com/thkukuk/hugo-easy-gallery/
 <!-- Photoswipe css/js libraries -->
 <script type="module">
 import PhotoSwipeLightbox from '/assets/photoswipe5/photoswipe-lightbox.esm.js';
+import PhotoSwipeDynamicCaption from '/assets/photoswipe-dynamic-caption-plugin/photoswipe-dynamic-caption-plugin.esm.js';
+
 const lightbox = new PhotoSwipeLightbox({
   gallery: '#photoswipe5-gallery',
   children: 'a',
@@ -18,7 +20,13 @@ const lightbox = new PhotoSwipeLightbox({
   loop: false,
 });
 lightbox.init();
+
+const captionPlugin = new PhotoSwipeDynamicCaption(lightbox, {
+  // Plugins options, for example:
+  type: 'auto',
+});
 </script>
 
 <link rel="stylesheet" href="/assets/photoswipe5/photoswipe.css">
+<link rel="stylesheet" href="/assets/photoswipe-dynamic-caption-plugin/photoswipe-dynamic-caption-plugin.css">
 {{ end -}}
