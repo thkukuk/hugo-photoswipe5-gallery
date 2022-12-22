@@ -3,7 +3,6 @@
 Automagical css image gallery in [Hugo](https://gohugo.io/) using shortcodes, with optional lightbox/carousel gadget using [PhotoSwipe 5.3.x](http://photoswipe.com/) and [Dynamic caption plugin](https://github.com/dimsemenov/photoswipe-dynamic-caption-plugin).
 
 This theme can create a gallery of all images in a directory. It uses [Hugo Page Resources](https://gohugo.io/content-management/page-resources/), which allows to create thumbnails on the fly, with a configurable thumbnail size.
-For example: `{{< gallery dir="/img/your-directory-of-images/" thumbnail-size="256x256" />}}`
 
 ## Demo
 
@@ -47,13 +46,13 @@ theme = ["hugo-main-theme", "hugo-photoshop5-gallery"]
 
 Specifying your image files:
 
-- `{{< figure src="thumb.jpg" link="image.jpg" >}}` will use `thumb.jpg` for thumbnail and `image.jpg` for lightbox
 - `{{< figure src="image.jpg" >}}` or `{{< figure link="image.jpg" >}}` will use `image.jpg` for both thumbnail and lightbox
-- `{{< figure link="image.jpg" thumb="-small" >}}` will use `image-small.jpg` for thumbnail and `image.jpg` for lightbox
 
 Optional parameters:
 
 - All the [features/parameters](https://gohugo.io/extras/shortcodes) of Hugo's built-in `figure` shortcode work as normal, i.e. src, link, title, caption, class, attr (attribution), attrlink, alt
+- `thumbnail-size` sets the size of the thumbnail. Default is "300x300". First number is width, second number is height.
+  - example: `{{< figure src="image.jpg" thumbnail-size="150x150" />}}`
 
 Optional parameters for standalone `{{< figure >}}` shortcodes only (i.e. don't use on `{{< figure >}}` inside `{{< gallery >}}` - strange things may happen if you do):
 
