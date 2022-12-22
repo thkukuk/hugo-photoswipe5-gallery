@@ -12,14 +12,14 @@ For example: `{{< gallery dir="/img/your-directory-of-images/" thumbnail-size="2
 
 ## Image Gallery Features
 
+- A `{{< gallery >}}` shortcode which will generate a gallery of all images in that directory
+  - Gallery is responsive, images are scaled/cropped to fill square (or other evenly-sized) tiles
+  - Pretty captions appear/slide/fade upon hovering over the image
+  - Optionally make gallery images zoom, grow, shrink, slide up, or slide down upon hover
 - Custom `{{< figure >}}` shortcode that enables new features but is backwards-compatible with Hugo's built-in `{{< figure >}}`shortcode
-- Use the `{{< figure >}}` shortcode by itself to enable pretty captions
-- Put multiple `{{< figure >}}` shortcodes inside a `{{< gallery >}}` to create a pretty image gallery
-- **Point `{{< gallery >}}` at a directory to generate a gallery of all images in that directory**
-  - the path to the directory needs to be identical with the URL path later.
-- Gallery is responsive, images are scaled/cropped to fill square (or other evenly-sized) tiles
-- Pretty captions appear/slide/fade upon hovering over the image
-- Optionally make gallery images zoom, grow, shrink, slide up, or slide down upon hover
+  - Use the `{{< figure >}}` shortcode by itself to enable pretty captions
+  - Put multiple `{{< figure >}}` shortcodes inside a `{{< gallery >}}` to create a pretty image gallery
+- If you add `{{< load-photoswipe >}}`, the images will be shown in a lightbox/carousel style image gallery
 - CSS is automatically loaded the first time you use the `{{< figure >}}` shortcode on each page
 
 ## PhotoSwipe Features
@@ -54,14 +54,11 @@ Specifying your image files:
 Optional parameters:
 
 - All the [features/parameters](https://gohugo.io/extras/shortcodes) of Hugo's built-in `figure` shortcode work as normal, i.e. src, link, title, caption, class, attr (attribution), attrlink, alt
-- `size` (e.g. `size="1024x768"`) pre-defines the image size for PhotoSwipe. Use this option if you don't want to pre-load the linked image to determine its size.
-- `class` allows you to set any custom classes you want on the `<figure>` tag.
 
 Optional parameters for standalone `{{< figure >}}` shortcodes only (i.e. don't use on `{{< figure >}}` inside `{{< gallery >}}` - strange things may happen if you do):
 
 - `caption-position` and `caption-effect` work the same as for the `{{< gallery >}}` shortcode (see below).
 - `width` defines the [`max-width`](https://www.w3schools.com/cssref/pr_dim_max-width.asp) of the image displayed on the page. If using a thumbnail for a standalone figure, set this equal to your thumbnail's native width to make the captions behave properly (or feel free to come up with a better solution and submit a pull request :-)). Also use this option if you don't have a thumbnail and you don't want the hi-res image to take up the entire width of the screen/container.
-- `class="no-photoswipe"` prevents a `<figure>` from being loaded into PhotoSwipe. If you click on the figure you'll instead a good ol' fashioned hyperlink to a bigger image (or - if you haven't specified a bigger image - the same one).
 
 ## `{{< gallery >}}` shortcode usage
 
