@@ -15,11 +15,11 @@ This theme can create a gallery of all images in a directory. It uses [Hugo Page
   - Gallery is responsive, images are scaled/cropped to fill square (or other evenly-sized) tiles
   - Pretty captions appear/slide/fade upon hovering over the image
   - Optionally make gallery images zoom, grow, shrink, slide up, or slide down upon hover
-- Custom `{{< figure >}}` shortcode that enables new features but is backwards-compatible with Hugo's built-in `{{< figure >}}`shortcode
-  - Use the `{{< figure >}}` shortcode by itself to enable pretty captions
-  - Put multiple `{{< figure >}}` shortcodes inside a `{{< gallery >}}` to create a pretty image gallery
+- New `{{< picture >}}` shortcode that is similar to Hugo's built-in `{{< figure >}}`shortcode but enables new features
+  - Use the `{{< picture >}}` shortcode by itself to enable pretty captions
+  - Put multiple `{{< picture >}}` shortcodes inside a `{{< gallery >}}` to create a pretty image gallery
 - If you add `{{< load-photoswipe >}}`, the images will be shown in a lightbox/carousel style image gallery
-- CSS is automatically loaded the first time you use the `{{< figure >}}` shortcode on each page
+- CSS is automatically loaded the first time you use the `{{< picture >}}` shortcode on each page
 
 ## PhotoSwipe Features
 
@@ -42,19 +42,19 @@ Then update your `./config.toml` to load the theme, for example:
 theme = ["hugo-main-theme", "hugo-photoshop5-gallery"]
 ```
 
-## `{{< figure >}}` shortcode usage
+## `{{< picture >}}` shortcode usage
 
 Specifying your image files:
 
-- `{{< figure src="image.jpg" >}}` or `{{< figure link="image.jpg" >}}` will use `image.jpg` for both thumbnail and lightbox
+- `{{< picture src="image.jpg" >}}` or `{{< figure link="image.jpg" >}}` will use `image.jpg` for both thumbnail and lightbox
 
 Optional parameters:
 
 - All the [features/parameters](https://gohugo.io/extras/shortcodes) of Hugo's built-in `figure` shortcode work as normal, i.e. src, link, title, caption, class, attr (attribution), attrlink, alt
 - `thumbnail-size` sets the size of the thumbnail. Default is "300x300". First number is width, second number is height.
-  - example: `{{< figure src="image.jpg" thumbnail-size="150x150" />}}`
+  - example: `{{< picture src="image.jpg" thumbnail-size="150x150" />}}`
 
-Optional parameters for standalone `{{< figure >}}` shortcodes only (i.e. don't use on `{{< figure >}}` inside `{{< gallery >}}` - strange things may happen if you do):
+Optional parameters for standalone `{{< picture >}}` shortcodes only (i.e. don't use on `{{< picture >}}` inside `{{< gallery >}}` - strange things may happen if you do):
 
 - `caption-position` and `caption-effect` work the same as for the `{{< gallery >}}` shortcode (see below).
 - `width` defines the [`max-width`](https://www.w3schools.com/cssref/pr_dim_max-width.asp) of the image displayed on the page. If using a thumbnail for a standalone figure, set this equal to your thumbnail's native width to make the captions behave properly (or feel free to come up with a better solution and submit a pull request :-)). Also use this option if you don't have a thumbnail and you don't want the hi-res image to take up the entire width of the screen/container.
@@ -74,9 +74,9 @@ To specify individual image files:
 
 ```
 {{< gallery >}}
-  {{< figure src="image1.jpg" >}}
-  {{< figure src="image2.jpg" >}}
-  {{< figure src="image3.jpg" >}}
+  {{< picture src="image1.jpg" >}}
+  {{< picture src="image2.jpg" >}}
+  {{< picture src="image3.jpg" >}}
 {{< /gallery >}}
 ```
 

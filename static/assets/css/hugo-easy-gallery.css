@@ -1,5 +1,5 @@
 /* Documentation and licence at https://github.com/thkukuk/hugo-photoswipe5-gallery/ */
-/* Forked from 
+/* Forked from
  * https://github.com/liwenyip/hugo-easy-gallery/blob/master/static/css/hugo-easy-gallery.css
  * with some fixes to make it working together with other styles
  */
@@ -17,7 +17,7 @@ Grid Layout Styles
     position: relative;
     /* Default: 1 tile wide */
     width: 100%;
-    padding-bottom: 100%; 
+    padding-bottom: 100%;
 }
 @media only screen and (min-width : 365px) {
     /* Tablet view: 2 tiles */
@@ -45,7 +45,7 @@ Grid Layout Styles
 Transition styles
 */
 .gallery.hover-transition figure,
-.gallery.hover-effect-zoom .img, 
+.gallery.hover-effect-zoom .img,
 .gallery:not(.caption-effect-appear) figcaption,
 .fancy-figure:not(.caption-effect-appear) figcaption {
     -webkit-transition: all 0.3s ease-in-out;
@@ -153,4 +153,3 @@ figcaption styles
 figcaption p {
     margin: auto; /* override style in theme */
 }
-
