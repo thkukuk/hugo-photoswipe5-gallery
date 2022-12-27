@@ -11,7 +11,7 @@ This theme can create a gallery of all images in a directory. It uses [Hugo Page
 
 ## Image Gallery Features
 
-- A `{{< gallery >}}` shortcode which will generate a gallery of all images in that directory
+- A `{{< gallery />}}` shortcode which will generate a gallery of all images in that directory
   - Gallery is responsive, images are scaled/cropped to fill square (or other evenly-sized) tiles
   - Pretty captions appear/slide/fade upon hovering over the image
   - Optionally make gallery images zoom, grow, shrink, slide up, or slide down upon hover
@@ -24,8 +24,7 @@ This theme can create a gallery of all images in a directory. It uses [Hugo Page
 ## PhotoSwipe Features
 
 - Load PhotoSwipe by calling the `{{< load-photoswipe >}}` shortcode anywhere in your post
-- Loads all of the `<figure>` elements in your post, regardless of where in your post they appear, into a lightbox/carousel style image gallery
-- Works with any existing `<figure>` elements/shortcodes in your posts
+- Loads all of the `{{< picture >}}` elements in your post, regardless of where in your post they appear, into a lightbox/carousel style image gallery
 - Loads PhotoSwipe and the danamic caption plugin js and css libraries from the local server, so GDPR conform no meta data can be transmitted to a 3rd party hoster.
 
 ## Installation
@@ -64,7 +63,7 @@ Optional parameters for standalone `{{< picture >}}` shortcodes only (i.e. don't
 To specify a directory of image files:
 
 ```
-{{< gallery dir="/img/your-directory-of-images/" />}}
+{{< gallery />}}
 ```
 
 - The images are automatically captioned with the file name.
@@ -101,7 +100,7 @@ Optional parameters:
   - not set - smooth transition (default)
   - `none` - hard transition
 - `thumbnail-size` sets the size of the thumbnails for the gallery. Default is "300x300". First number is width, second number is height.
-  - example: `{{< gallery dir="/img/your-directory-of-images/" thumbnail-size="150x150" />}}`
+  - example: `{{< gallery thumbnail-size="150x150" />}}`
 
 ## PhotoSwipe usage
 

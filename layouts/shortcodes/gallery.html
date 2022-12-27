@@ -9,7 +9,10 @@ Documentation and licence at https://github.com/thkukuk/hugo-easy-gallery/
 {{- $thumbnailSize := .Get "thumbnail-size" | default "300x300" -}}
 <div class="gallery caption-position-{{ with .Get "caption-position" | default "bottom" }}{{.}}{{end}} caption-effect-{{ with .Get "caption-effect" | default "slide" }}{{.}}{{end}} hover-effect-{{ with .Get "hover-effect" | default "zoom" }}{{.}}{{end}} {{ if ne (.Get "hover-transition") "none" }}hover-transition{{end}}" itemscope itemtype="http://schema.org/ImageGallery">
     <div class="pswp-gallery pswp-gallery--single-column" id="photoswipe5-gallery">
-    {{- with (.Get "dir") -}}
+    {{- with .Inner -}}
+        <!-- If no directory was specified, include any figure shortcodes called within the gallery -->
+        {{ . }}
+    {{- else -}}
         <!-- Generate figures for all page resources of type image. -->
 	{{- range $.Page.Resources.ByType "image" }}
 	    {{- $thumbnail := .Fill $thumbnailSize -}}
@@ -33,9 +36,5 @@ Documentation and licence at https://github.com/thkukuk/hugo-easy-gallery/
             </div>
 	{{end }}
     {{- end }}
-    {{- with .Inner -}}
-        <!-- If no directory was specified, include any figure shortcodes called within the gallery -->
-        {{ . }}
-    {{- end -}}
     </div>
 </div>
