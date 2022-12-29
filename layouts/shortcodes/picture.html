@@ -5,14 +5,13 @@ Documentation and licence at https://github.com/liwenyip/hugo-easy-gallery/
 {{- if not ($.Page.Scratch.Get "figurecount") }}<link rel="stylesheet" href={{ "assets/css/hugo-easy-gallery.css" | relURL }} />{{ end }}
 {{- $.Page.Scratch.Add "figurecount" 1 -}}
 {{- $image := .Page.Resources.GetMatch (printf "**%s*" (.Get "src")) -}}
-{{- $thumbnail := $image -}}
-{{- with .Get "thumbnail-size" -}}
-  {{- $thumbnailSize := .Get "thumbnail-size" | default "300x300" -}}
-  {{- $thumbnail = $image.Fill $thumbnailSize -}}
-{{- end -}}
+{{- $thumbnailSize := .Get "thumbnail-size" | default "300x300" -}}
+{{- $thumbnail := $image.Fill $thumbnailSize -}}
 <div class="box{{ with .Get "caption-position" }} fancy-figure caption-position-{{.}}{{end}}{{ with .Get "caption-effect" }} caption-effect-{{.}}{{end}}" {{ with .Get "width" }}style="max-width:{{.}}"{{end}}>
   <figure {{ with .Get "class" }}class="{{.}}"{{ end }} itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-    <div class="img" style="background-image: url('{{ $thumbnail.RelPermalink }}'); background-repeat:no-repeat;" >
+    <div class="img" style="background-image: url('{{ $thumbnail.RelPermalink }}');
+                            background-repeat: no-repeat;
+                            background-size: {{ $thumbnail.Width }}px {{ $thumbnail.Height }}px" >
       <a href="{{ .Get "link" | default $image.RelPermalink }}"
          data-pswp-width="{{ $image.Width }}"
          data-pswp-height="{{ $image.Height }}"
@@ -21,7 +20,7 @@ Documentation and licence at https://github.com/liwenyip/hugo-easy-gallery/
         <img itemprop="thumbnail" src="{{- $thumbnail.RelPermalink -}}" width="{{ $thumbnail.Width }}" height="{{ $thumbnail.Height }}" alt="{{ .Get "alt" | default (.Get "title") }}">
             <span class="pswp-caption-content">
               {{- .Get "caption" -}}<br>
-	      {{- if .Site.Params.Gallery.UseExif }}
+	      {{ if or .Page.Params.UseExif (and (eq .Page.Params.UseExif nil) .Site.Params.Gallery.UseExif) -}}
 	        {{- with $image.Exif }}
 	          {{- if .Tags.Make }}
                     Camera Maker: {{ .Tags.Make }}<br>
