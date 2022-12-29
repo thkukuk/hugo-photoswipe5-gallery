@@ -4,7 +4,7 @@ Documentation and licence at https://github.com/liwenyip/hugo-easy-gallery/
 <!-- count how many times we've called this shortcode; load the css if it's the first time -->
 {{- if not ($.Page.Scratch.Get "figurecount") }}<link rel="stylesheet" href={{ "assets/css/hugo-easy-gallery.css" | relURL }} />{{ end }}
 {{- $.Page.Scratch.Add "figurecount" 1 -}}
-{{- $image := .Page.Resources.GetMatch (printf "*%s*" (.Get "src")) -}}
+{{- $image := .Page.Resources.GetMatch (printf "**%s*" (.Get "src")) -}}
 {{- $thumbnail := $image -}}
 {{- with .Get "thumbnail-size" -}}
   {{- $thumbnailSize := .Get "thumbnail-size" | default "300x300" -}}
@@ -13,10 +13,12 @@ Documentation and licence at https://github.com/liwenyip/hugo-easy-gallery/
 <div class="box{{ with .Get "caption-position" }} fancy-figure caption-position-{{.}}{{end}}{{ with .Get "caption-effect" }} caption-effect-{{.}}{{end}}" {{ with .Get "width" }}style="max-width:{{.}}"{{end}}>
   <figure {{ with .Get "class" }}class="{{.}}"{{ end }} itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
     <div class="img" style="background-image: url('{{ $thumbnail.RelPermalink }}'); background-repeat:no-repeat;" >
-      <a href="{{ $image.RelPermalink }}"
+      <a href="{{ .Get "link" | default $image.RelPermalink }}"
          data-pswp-width="{{ $image.Width }}"
-         data-pswp-height="{{ $image.Height }}">
-        <img src="{{- $thumbnail.RelPermalink -}}" width="{{ $thumbnail.Width }}" height="{{ $thumbnail.Height }}" alt="{{ .Get "title" }}">
+         data-pswp-height="{{ $image.Height }}"
+         {{ with .Get "target" }}target="{{ . }}"{{ end }}
+         {{ with .Get "rel" }} rel="{{ . }}"{{ end }} itemprop="contentUrl">
+        <img itemprop="thumbnail" src="{{- $thumbnail.RelPermalink -}}" width="{{ $thumbnail.Width }}" height="{{ $thumbnail.Height }}" alt="{{ .Get "alt" | default (.Get "title") }}">
             <span class="pswp-caption-content">
               {{- .Get "caption" -}}<br>
 	      {{- if .Site.Params.Gallery.UseExif }}
@@ -61,21 +63,21 @@ Documentation and licence at https://github.com/liwenyip/hugo-easy-gallery/
               {{- end -}}
             </span>
       </a>
-      {{- if or (or (.Get "title") (.Get "caption")) (.Get "attr")}}
-      <figcaption>
-        {{- with .Get "title" }}<h4>{{.}}</h4>{{ end }}
-        {{- if or (.Get "caption") (.Get "attr")}}
-          <p>
-            {{- .Get "caption" -}}
-            {{- with .Get "attrlink" }}
-              <a href="{{ . }}">
-            {{- end -}}
-            {{- .Get "attr" | markdownify -}}
-            {{- if .Get "attrlink" }}</a>{{ end }}
-          </p>
-        {{- end }}
-      </figcaption>
-      {{- end }}
     </div>
+    {{- if or (or (.Get "title") (.Get "caption")) (.Get "attr")}}
+    <figcaption>
+      {{- with .Get "title" }}<h4>{{.}}</h4>{{ end }}
+      {{- if or (.Get "caption") (.Get "attr")}}
+        <p>
+          {{- .Get "caption" -}}
+          {{- with .Get "attrlink" }}
+            <a href="{{ . }}">
+          {{- end -}}
+          {{- .Get "attr" | markdownify -}}
+          {{- if .Get "attrlink" }}</a>{{ end }}
+        </p>
+      {{- end }}
+    </figcaption>
+    {{- end }}
   </figure>
 </div>
