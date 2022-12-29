@@ -45,7 +45,7 @@ theme = ["hugo-main-theme", "hugo-photoshop5-gallery"]
 
 Specifying your image files:
 
-- `{{< picture src="image.jpg" >}}` or `{{< figure link="image.jpg" >}}` will use `image.jpg` for both thumbnail and lightbox
+- `{{< picture src="image.jpg" >}}` will use `image.jpg` for lightbox and create a thumbnail from it.
 
 Optional parameters:
 
@@ -81,14 +81,14 @@ To specify individual image files:
 
 Optional parameters:
 
-- `caption-position` - determines the captions' position over the image. Options:
-  - `bottom` (default)
-  - `center`
-  - `none` hides captions on the page (they will only show in PhotoSwipe)
 - `caption-effect` - determines if/how captions appear upon hover. Options:
   - `slide` (default)
   - `fade`
   - `none` (captions always visible)
+- `caption-position` - determines the captions' position over the image. Options:
+  - `bottom` (default)
+  - `center`
+  - `none` hides captions on the page (they will only show in PhotoSwipe)
 - `hover-effect` - determines if/how images change upon hover. Options:
   - `zoom` (default)
   - `grow`
@@ -99,7 +99,7 @@ Optional parameters:
 - `hover-transition` - determines if/how images change upon hover. Options:
   - not set - smooth transition (default)
   - `none` - hard transition
-- `thumbnail-size` sets the size of the thumbnails for the gallery. Default is "300x300". First number is width, second number is height.
+- `thumbnail-size` sets the size of the thumbnails for the gallery. Default is "300x300". First number is width, second number is height. This option affects the quality and size of the preview image, but not the display size, which depends on the style.
   - example: `{{< gallery thumbnail-size="150x150" />}}`
 
 ## PhotoSwipe usage
