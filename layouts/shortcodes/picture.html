@@ -1,21 +1,65 @@
 <!--
-This shortcode overrides Hugo's built-in "figure" shortcode but is backwards compatible
 Documentation and licence at https://github.com/liwenyip/hugo-easy-gallery/
 -->
 <!-- count how many times we've called this shortcode; load the css if it's the first time -->
 {{- if not ($.Page.Scratch.Get "figurecount") }}<link rel="stylesheet" href={{ "assets/css/hugo-easy-gallery.css" | relURL }} />{{ end }}
 {{- $.Page.Scratch.Add "figurecount" 1 -}}
-{{- $thumbnailSize := .Get "thumbnail-size" | default "300x300" -}}
 {{- $image := .Page.Resources.GetMatch (printf "*%s*" (.Get "src")) -}}
-{{- $thumbnail := $image.Fill $thumbnailSize -}}
+{{- $thumbnail := $image -}}
+{{- with .Get "thumbnail-size" -}}
+  {{- $thumbnailSize := .Get "thumbnail-size" | default "300x300" -}}
+  {{- $thumbnail = $image.Fill $thumbnailSize -}}
+{{- end -}}
 <div class="box{{ with .Get "caption-position" }} fancy-figure caption-position-{{.}}{{end}}{{ with .Get "caption-effect" }} caption-effect-{{.}}{{end}}" {{ with .Get "width" }}style="max-width:{{.}}"{{end}}>
   <figure {{ with .Get "class" }}class="{{.}}"{{ end }} itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-    <div class="img" style="background-image: url('{{ $thumbnail.RelPermalink }}');" >
+    <div class="img" style="background-image: url('{{ $thumbnail.RelPermalink }}'); background-repeat:no-repeat;" >
       <a href="{{ $image.RelPermalink }}"
          data-pswp-width="{{ $image.Width }}"
          data-pswp-height="{{ $image.Height }}">
         <img src="{{- $thumbnail.RelPermalink -}}" width="{{ $thumbnail.Width }}" height="{{ $thumbnail.Height }}" alt="{{ .Get "title" }}">
-            <span class="pswp-caption-content">{{- .Get "caption" -}}</span>
+            <span class="pswp-caption-content">
+              {{- .Get "caption" -}}<br>
+	      {{- if .Site.Params.Gallery.UseExif }}
+	        {{- with $image.Exif }}
+	          {{- if .Tags.Make }}
+                    Camera Maker: {{ .Tags.Make }}<br>
+                  {{- end -}}
+	          {{- if .Tags.Model }}
+                    Camera Model: {{ .Tags.Model }}<br>
+                  {{- end -}}
+	          {{- with .Tags.LensModel }}
+                    Lens Model: {{ . }}<br>
+                  {{- end -}}
+                  {{- if .Tags.FocalLength }}
+                    Focal Length: {{ .Tags.FocalLength }}mm<br>
+                  {{- end -}}
+                  {{- if .Tags.ExposureTime }}
+                    Exposure Time: {{ .Tags.ExposureTime }}<br>
+                  {{- end -}}
+                  {{- if .Tags.FNumber }}
+                    Aperture: f/{{ .Tags.FNumber }}<br>
+                  {{- end -}}
+                  {{- if .Tags.ISOSpeedRatings }}
+                    ISO: {{ .Tags.ISOSpeedRatings }}<br>
+                  {{- end -}}
+                  {{- if .Tags.Flash }}
+                    Flash: {{ .Tags.Flash }}<br>
+                  {{- end -}}
+                  {{- if .Tags.DateTime }}
+                    Date and Time Taken: {{ .Tags.DateTime }}<br>
+                  {{- end -}}
+		  {{ if and .Tags.GPSLatitude .Tags.GPSLongitude }}
+                    {{- $latSign := 1 -}}
+                    {{- if eq .Tags.LatRef "S" }}{{ $latSign = -1 }}{{ end -}}
+                    {{- $lonSign := 1 -}}
+                    {{- if eq .Tags.LonRef "W" }}{{ $lonSign = -1 }}{{ end -}}
+                    {{- $lat := mul $latSign (add (index .Tags.GPSLatitude 0) (add (div (index .Tags.GPSLatitude 1) 60) (div (index .Tags.GPSLatitude 2) 3600))) -}}
+                    {{- $lon := mul $lonSign (add (index .Tags.GPSLongitude 0) (add (div (index .Tags.GPSLongitude 1) 60) (div (index .Tags.GPSLongitude 2) 3600))) -}}
+                    <!-- a href="http://www.openstreetmap.org/?mlat={{ $lat }}&mlon={{ $lon }}&zoom=16&layers=M"-->GPS Position: {{ $lat }} {{ $lon }}<!-- /a -->
+                  {{- end -}}
+	        {{- end -}}
+              {{- end -}}
+            </span>
       </a>
       {{- if or (or (.Get "title") (.Get "caption")) (.Get "attr")}}
       <figcaption>
@@ -23,7 +67,11 @@ Documentation and licence at https://github.com/liwenyip/hugo-easy-gallery/
         {{- if or (.Get "caption") (.Get "attr")}}
           <p>
             {{- .Get "caption" -}}
-            {{- with .Get "attrlink"}}<a href="{{.}}">{{ .Get "attr" }}</a>{{ else }}{{ .Get "attr"}}{{ end -}}
+            {{- with .Get "attrlink" }}
+              <a href="{{ . }}">
+            {{- end -}}
+            {{- .Get "attr" | markdownify -}}
+            {{- if .Get "attrlink" }}</a>{{ end }}
           </p>
         {{- end }}
       </figcaption>
