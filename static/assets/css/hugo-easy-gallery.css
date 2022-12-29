@@ -33,7 +33,7 @@ Grid Layout Styles
         padding-bottom: 33.3%; /*  */
     }
 }
-@media only screen and (min-width : 9999px) {
+@media only screen and (min-width : 999px) {
    /* Medium desktop: 4 tiles */
    .gallery .box {
       width: 25%;
@@ -63,6 +63,7 @@ figure styles
     top: 5px;
     bottom: 5px;
     overflow: hidden;
+    margin: 0px;
 }
 .gallery.hover-effect-grow figure:hover {
     transform: scale(1.05);
@@ -153,3 +154,12 @@ figcaption styles
 figcaption p {
     margin: auto; /* override style in theme */
 }
+
+/* 
+From photoswipe5 caption plugin. Define for the cases we use only
+picture.html and not gallery.html
+*/
+.pswp-caption-content {
+  display: none;
+}
+
