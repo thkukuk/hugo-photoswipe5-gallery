@@ -1,5 +1,5 @@
 # Bugs
-gallery ignores dir argument
-figures is not compatible with hugo built-in
+* Calculation of GPS coordinates leads sometimes to errors
 
 # Features
+* Add href for GPS coordinates on OpenStreetMap maps
