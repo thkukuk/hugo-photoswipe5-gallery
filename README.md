@@ -6,27 +6,27 @@ This theme can create a gallery of all images in a [page bundle](https://gohugo.
 
 ## Demo
 
-- Real-life example at https://www.thkukuk.de/gallery/
-- Feature demonstration at https://www.thkukuk.de/blog/hugo-photoswipe5-gallery/
+* Real-life example at https://www.thkukuk.de/gallery/
+* Feature demonstration at https://www.thkukuk.de/blog/hugo-photoswipe5-gallery/
 
 ## Image Gallery Features
 
-- A `{{< gallery />}}` shortcode which will generate a gallery of all images in that directory
-  - Gallery is responsive, images are scaled/cropped to fill square (or other evenly-sized) tiles
-  - Pretty captions appear/slide/fade upon hovering over the image
-  - Optionally make gallery images zoom, grow, shrink, slide up, or slide down upon hover
-- New `{{< picture >}}` shortcode that is similar to Hugo's built-in `{{< figure >}}`shortcode works together with `gallery` shortcode.
-  - Use the `{{< picture >}}` shortcode by itself to enable pretty captions
-  - Put multiple `{{< picture >}}` shortcodes inside a `{{< gallery >}}` to create a pretty image gallery
-- If you add `{{< load-photoswipe >}}`, the images will be shown in a lightbox/carousel style image gallery
-- CSS is automatically loaded the first time you use the `{{< picture >}}` shortcode on each page
-- Sidecar files for additonal meta data
+* A `{{< gallery />}}` shortcode which will generate a gallery of all images in that directory
+  * Gallery is responsive, images are scaled/cropped to fill square (or other evenly-sized) tiles
+  * Pretty captions appear/slide/fade upon hovering over the image
+  * Optionally make gallery images zoom, grow, shrink, slide up, or slide down upon hover
+* New `{{< picture >}}` shortcode that is similar to Hugo's built-in `{{< figure >}}`shortcode works together with `gallery` shortcode.
+  * Use the `{{< picture >}}` shortcode by itself to enable pretty captions
+  * Put multiple `{{< picture >}}` shortcodes inside a `{{< gallery >}}` to create a pretty image gallery
+* If you add `{{< load-photoswipe >}}`, the images will be shown in a lightbox/carousel style image gallery
+* CSS is automatically loaded the first time you use the `{{< picture >}}` shortcode on each page
+* Sidecar files for additonal meta data
 
 ## PhotoSwipe Features
 
-- Load PhotoSwipe by calling the `{{< load-photoswipe >}}` shortcode anywhere in your post
-- Loads all of the `{{< picture >}}` elements in your post, regardless of where in your post they appear, into a lightbox/carousel style image gallery
-- Loads PhotoSwipe and the danamic caption plugin js and css libraries from the local server, so GDPR conform no meta data can be transmitted to a 3rd party hoster.
+* Load PhotoSwipe by calling the `{{< load-photoswipe >}}` shortcode anywhere in your post
+* Loads all of the `{{< picture >}}` elements in your post, regardless of where in your post they appear, into a lightbox/carousel style image gallery
+* Loads PhotoSwipe and the danamic caption plugin js and css libraries from the local server, so GDPR conform no meta data can be transmitted to a 3rd party hoster.
 
 ## Installation
 
@@ -46,18 +46,18 @@ theme = ["hugo-main-theme", "hugo-photoshop5-gallery"]
 
 Specifying your image files:
 
-- `{{< picture src="image.jpg" >}}` will use `image.jpg` for lightbox and create a thumbnail from it.
+* `{{< picture src="image.jpg" >}}` will use `image.jpg` for lightbox and create a thumbnail from it.
 
 Optional parameters:
 
-- All the [features/parameters](https://gohugo.io/extras/shortcodes) of Hugo's built-in `figure` shortcode work as normal, i.e. src, link, title, caption, class, attr (attribution), attrlink, alt
-- `thumbnail-size` sets the size of the thumbnail. Default is "300x300". First number is width, second number is height.
-  - example: `{{< picture src="image.jpg" thumbnail-size="150x150" />}}`
+* All the [features/parameters](https://gohugo.io/extras/shortcodes) of Hugo's built-in `figure` shortcode work as normal, i.e. src, link, title, caption, class, attr (attribution), attrlink, alt
+* `thumbnail-size` sets the size of the thumbnail. Default is "300x300". First number is width, second number is height.
+  * example: `{{< picture src="image.jpg" thumbnail-size="150x150" />}}`
 
 Optional parameters for standalone `{{< picture >}}` shortcodes only (i.e. don't use on `{{< picture >}}` inside `{{< gallery >}}` - strange things may happen if you do):
 
-- `caption-position` and `caption-effect` work the same as for the `{{< gallery >}}` shortcode (see below).
-- `width` defines the [`max-width`](https://www.w3schools.com/cssref/pr_dim_max-width.asp) of the image displayed on the page. If using a thumbnail for a standalone figure, set this equal to your thumbnail's native width to make the captions behave properly (or feel free to come up with a better solution and submit a pull request :-)). Also use this option if you don't have a thumbnail and you don't want the hi-res image to take up the entire width of the screen/container.
+* `caption-position` and `caption-effect` work the same as for the `{{< gallery >}}` shortcode (see below).
+* `width` defines the [`max-width`](https://www.w3schools.com/cssref/pr_dim_max-width.asp) of the image displayed on the page. If using a thumbnail for a standalone figure, set this equal to your thumbnail's native width to make the captions behave properly (or feel free to come up with a better solution and submit a pull request :-)). Also use this option if you don't have a thumbnail and you don't want the hi-res image to take up the entire width of the screen/container.
 
 ## `{{< gallery >}}` shortcode usage
 
@@ -67,8 +67,8 @@ To specify a directory of image files:
 {{< gallery />}}
 ```
 
-- The images are automatically captioned with the file name.
-- Thumbnails are automatically generated
+* The images are automatically captioned with the file name.
+* Thumbnails are automatically generated
 
 To specify individual image files:
 
@@ -134,20 +134,18 @@ The metadata embedded in an image can be extended or overwritten by a metadata s
 
 ## PhotoSwipe usage
 
-- Call `{{< load-photoswipe >}}` **once** on each page where you want to use PhotoSwipe.
-- It doesn't matter where on the page.
-- If you don't load PhotoSwipe, each figure will instead have a good ol' fashioned hyperlink to a bigger image (or - if you haven't specified a bigger image - the same one).
+* Call `{{< load-photoswipe >}}` **once** on each page where you want to use PhotoSwipe.
+* It doesn't matter where on the page.
+* If you don't load PhotoSwipe, each figure will instead have a good ol' fashioned hyperlink to a bigger image (or - if you haven't specified a bigger image - the same one).
 
 ## CSS Hackers
 
-`hugo-easy-gallery.css` is designed to provide square tiles in a container with `max-width: 768px`.
+`hugo-easy-gallery.css` is designed to provide square tiles in a container.
 
 Here are some pointers if you want to adapt the CSS:
-
- - Change `.gallery {max-width: 768px;}` if you want a gallery wider than 768px.
- - Change `min-width` in the `@media` styles to change the screen widths at which the layout changes
- - If you want more than 4 tiles per row, set `width` = 100% / number of tiles per row
- - `padding-bottom` = `width` gives square tiles. Change padding-bottom if you want some other aspect ratio, e.g. `width: 33.3%; padding-bottom: 25%` gives a 4:3 aspect ratio.
+* Change `min-width` in the `@media` styles to change the screen widths at which the layout changes
+* If you want more than 4 tiles per row, set `width` = 100% / number of tiles per row
+* `padding-bottom` = `width` gives square tiles. Change padding-bottom if you want some other aspect ratio, e.g. `width: 33.3%; padding-bottom: 25%` gives a 4:3 aspect ratio.
 
 ## Issues
 
