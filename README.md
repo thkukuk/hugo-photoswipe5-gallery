@@ -1,13 +1,13 @@
 # hugo-photoswipe5-gallery
 
-Automagical css image gallery in [Hugo](https://gohugo.io/) using shortcodes, with optional lightbox/carousel gadget using [PhotoSwipe 5.3.x](http://photoswipe.com/) and [Dynamic caption plugin](https://github.com/dimsemenov/photoswipe-dynamic-caption-plugin).
+This is an automagical css image gallery theme for [Hugo](https://gohugo.io/) using shortcodes, with an optional lightbox/carousel gadget. For this [PhotoSwipe 5.3.x](http://photoswipe.com/) and [Dynamic caption plugin](https://github.com/dimsemenov/photoswipe-dynamic-caption-plugin) are used.
 
-This theme can create a gallery of all images in a directory. It uses [Hugo Page Resources](https://gohugo.io/content-management/page-resources/), which allows to create thumbnails on the fly, with a configurable thumbnail size.
+This theme can create a gallery of all images in a [page bundle](https://gohugo.io/content-management/page-bundles/). It uses [Hugo Page Resources](https://gohugo.io/content-management/page-resources/), which allows to create thumbnails on the fly, with a configurable thumbnail size.
 
 ## Demo
 
 - Real-life example at https://www.thkukuk.de/gallery/
-- Feature demonstration at ...
+- Feature demonstration at https://www.thkukuk.de/blog/hugo-photoswipe5-gallery/
 
 ## Image Gallery Features
 
@@ -15,11 +15,12 @@ This theme can create a gallery of all images in a directory. It uses [Hugo Page
   - Gallery is responsive, images are scaled/cropped to fill square (or other evenly-sized) tiles
   - Pretty captions appear/slide/fade upon hovering over the image
   - Optionally make gallery images zoom, grow, shrink, slide up, or slide down upon hover
-- New `{{< picture >}}` shortcode that is similar to Hugo's built-in `{{< figure >}}`shortcode but enables new features
+- New `{{< picture >}}` shortcode that is similar to Hugo's built-in `{{< figure >}}`shortcode works together with `gallery` shortcode.
   - Use the `{{< picture >}}` shortcode by itself to enable pretty captions
   - Put multiple `{{< picture >}}` shortcodes inside a `{{< gallery >}}` to create a pretty image gallery
 - If you add `{{< load-photoswipe >}}`, the images will be shown in a lightbox/carousel style image gallery
 - CSS is automatically loaded the first time you use the `{{< picture >}}` shortcode on each page
+- Sidecar files for additonal meta data
 
 ## PhotoSwipe Features
 
@@ -79,28 +80,57 @@ To specify individual image files:
 {{< /gallery >}}
 ```
 
-Optional parameters:
+## Optional parameters:
 
-- `caption-effect` - determines if/how captions appear upon hover. Options:
-  - `slide` (default)
-  - `fade`
-  - `none` (captions always visible)
-- `caption-position` - determines the captions' position over the image. Options:
-  - `bottom` (default)
-  - `center`
-  - `none` hides captions on the page (they will only show in PhotoSwipe)
-- `hover-effect` - determines if/how images change upon hover. Options:
-  - `zoom` (default)
-  - `grow`
-  - `shrink`
-  - `slideup`
-  - `slidedown`
-  - `none`
-- `hover-transition` - determines if/how images change upon hover. Options:
-  - not set - smooth transition (default)
-  - `none` - hard transition
-- `thumbnail-size` sets the size of the thumbnails for the gallery. Default is "300x300". First number is width, second number is height. This option affects the quality and size of the preview image, but not the display size, which depends on the style.
-  - example: `{{< gallery thumbnail-size="150x150" />}}`
+* `caption-effect` - determines if/how captions appear upon hover. Options:
+  * `slide` (default)
+  * `fade`
+  * `none` (captions always visible)
+* `caption-position` - determines the captions’ position over the image. Options:
+  * `bottom` (default)
+  * `center`
+  * `none` hides captions on the page (they will only show in PhotoSwipe)
+* `hover-effect` - determines if/how images change upon hover. Options:
+  * `zoom` (default)
+  * `grow`
+  * `shrink`
+  * `slideup`
+  * `slidedown`
+  * `none`
+* `hover-transition` - determines if/how images change upon hover. Options:
+  * not set - smooth transition (default)
+  * `none` - hard transition
+* `thumbnail-size` sets the size of the thumbnails for the gallery. Default is "300x300". First number is width, second number is height. This option affects the quality and size of the preview image, but not the display size, which depends on the style.
+  * example: `{{< gallery thumbnail-size="150x150" />}}`
+* `match` - limits the search path and pattern for images
+* `sort` - decides how the images get's sorted. Options:
+  * `asc` (ascending, default)
+  * `desc` (descending)
+
+## Global Configuration Variables:
+
+```
+[params.gallery]
+  useExif = true
+  sort = asc
+```
+
+* `useExif` defines if Exif informations should be shown in the photoswipe lightbox. This can be overwritten per page in the [Front Matter](https://gohugo.io/content-management/front-matter/).
+
+* `sort` decides whether the images are sorted ascending ("asc") or descending ("desc") and can be overwritten per `gallery` option.
+
+## Sidecar files
+
+The metadata embedded in an image can be extended or overwritten by a metadata sidecar file. The file must have the same name as the image plus ".meta" (e.g. "image.jpg.meta"). The content has to be a JSON like:
+
+```
+{
+"Tags": ["amrum","natur"],
+"Title": "Lighthouse",
+"Caption": "The Lighthouse of Amrum",
+"Rating": 2
+}
+```
 
 ## PhotoSwipe usage
 
@@ -116,13 +146,12 @@ Here are some pointers if you want to adapt the CSS:
 
  - Change `.gallery {max-width: 768px;}` if you want a gallery wider than 768px.
  - Change `min-width` in the `@media` styles to change the screen widths at which the layout changes
- - Change `min-width: 9999px` in the last `@media` style to something sensible if you want to use a 4-tile layout
  - If you want more than 4 tiles per row, set `width` = 100% / number of tiles per row
  - `padding-bottom` = `width` gives square tiles. Change padding-bottom if you want some other aspect ratio, e.g. `width: 33.3%; padding-bottom: 25%` gives a 4:3 aspect ratio.
 
 ## Issues
 
-I've tested this with my [hugo-theme-personal-web](https://github.com/thkukuk/hugo-theme-pesonal-web/) theme. If things don't work properly with other themes, raise an issue on GitHub, or even better fix the issue and submit a pull request :-)
+I've tested this with my [hugo-personal-home](https://github.com/thkukuk/hugo-pesonal-home/) theme. If things don't work properly with other themes, raise an issue on GitHub, or even better fix the issue and submit a pull request :-)
 
 ## Credits
 
