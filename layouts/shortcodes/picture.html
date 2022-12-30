@@ -15,8 +15,9 @@ Documentation and licence at https://github.com/liwenyip/hugo-easy-gallery/
       <a href="{{ .Get "link" | default $image.RelPermalink }}"
          data-pswp-width="{{ $image.Width }}"
          data-pswp-height="{{ $image.Height }}"
-         {{ with .Get "target" }}target="{{ . }}"{{ end }}
-         {{ with .Get "rel" }} rel="{{ . }}"{{ end }} itemprop="contentUrl">
+         {{- with .Get "target" }} target="{{ . }}"{{ end }}
+         {{- with .Get "rel" }} rel="{{ . }}"{{ end }}
+         itemprop="contentUrl">
         <img itemprop="thumbnail" src="{{- $thumbnail.RelPermalink -}}" width="{{ $thumbnail.Width }}" height="{{ $thumbnail.Height }}" alt="{{ .Get "alt" | default (.Get "title") }}">
             <span class="pswp-caption-content">
               {{- .Get "caption" -}}<br>
