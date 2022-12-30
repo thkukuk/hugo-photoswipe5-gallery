@@ -92,11 +92,9 @@ Documentation and licence at https://github.com/thkukuk/hugo-easy-gallery/
               </span>
             </a>
           </div>
-          {{- with .Title }}
           <figcaption>
-            <p>{{ . }}</p>
+            <p>{{ $metadata.Title | default .Title }}</p>
           </figcaption>
-          {{- end }}
         </figure>
       </div>
     {{- end -}}
