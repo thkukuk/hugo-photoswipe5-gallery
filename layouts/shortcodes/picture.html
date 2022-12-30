@@ -5,6 +5,16 @@ Documentation and licence at https://github.com/liwenyip/hugo-easy-gallery/
 {{- if not ($.Page.Scratch.Get "figurecount") }}<link rel="stylesheet" href={{ "assets/css/hugo-easy-gallery.css" | relURL }} />{{ end }}
 {{- $.Page.Scratch.Add "figurecount" 1 -}}
 {{- $image := .Page.Resources.GetMatch (printf "**%s*" (.Get "src")) -}}
+<!-- Get metadata from sidecar file, if present. Else an empty dictionary is used. -->
+{{- $metaFileName := print $image.Name ".meta" -}}
+{{- $metadata := .Page.Resources.GetMatch ($metaFileName) -}}
+{{- if $metadata -}}
+  {{- $metadata = $metadata.Content -}}
+  {{- $metadata = $metadata | unmarshal -}}
+{{- else -}}
+  {{- $metadata = dict -}}
+{{- end -}}
+
 {{- $thumbnailSize := .Get "thumbnail-size" | default "300x300" -}}
 {{- $thumbnail := $image.Fill $thumbnailSize -}}
 <div class="box{{ with .Get "caption-position" }} fancy-figure caption-position-{{.}}{{end}}{{ with .Get "caption-effect" }} caption-effect-{{.}}{{end}}" {{ with .Get "width" }}style="max-width:{{.}}"{{end}}>
@@ -19,44 +29,50 @@ Documentation and licence at https://github.com/liwenyip/hugo-easy-gallery/
          {{- with .Get "rel" }} rel="{{ . }}"{{ end }}
          itemprop="contentUrl">
         <img itemprop="thumbnail" src="{{- $thumbnail.RelPermalink -}}" width="{{ $thumbnail.Width }}" height="{{ $thumbnail.Height }}" alt="{{ .Get "alt" | default (.Get "title") }}">
+          {{ if or .Page.Params.UseExif (and (eq .Page.Params.UseExif nil) .Site.Params.Gallery.UseExif) -}}
+             <!-- merge Exif informations together with the metadata from the file -->
+             {{- with $image.Exif -}}
+               {{ $metadata = merge .Tags $metadata }}
+             {{- end -}}
+          {{- end -}}
             <span class="pswp-caption-content">
-              {{- .Get "caption" -}}<br>
+              {{- .Get "caption" | default ($metadata.Caption | default $metadata.ImageDescription) -}}<br>
 	      {{ if or .Page.Params.UseExif (and (eq .Page.Params.UseExif nil) .Site.Params.Gallery.UseExif) -}}
-	        {{- with $image.Exif }}
-	          {{- if .Tags.Make }}
-                    Camera Maker: {{ .Tags.Make }}<br>
+	        {{- with $metadata }}
+	          {{- if .Make }}
+                    Camera Maker: {{ .Make }}<br>
                   {{- end -}}
-	          {{- if .Tags.Model }}
-                    Camera Model: {{ .Tags.Model }}<br>
+	          {{- if .Model }}
+                    Camera Model: {{ .Model }}<br>
                   {{- end -}}
-	          {{- with .Tags.LensModel }}
+	          {{- with .LensModel }}
                     Lens Model: {{ . }}<br>
                   {{- end -}}
-                  {{- if .Tags.FocalLength }}
-                    Focal Length: {{ .Tags.FocalLength }}mm<br>
+                  {{- if .FocalLength }}
+                    Focal Length: {{ .FocalLength }}mm<br>
                   {{- end -}}
-                  {{- if .Tags.ExposureTime }}
-                    Exposure Time: {{ .Tags.ExposureTime }}<br>
+                  {{- if .ExposureTime }}
+                    Exposure Time: {{ .ExposureTime }}<br>
                   {{- end -}}
-                  {{- if .Tags.FNumber }}
-                    Aperture: f/{{ .Tags.FNumber }}<br>
+                  {{- if .FNumber }}
+                    Aperture: f/{{ .FNumber }}<br>
                   {{- end -}}
-                  {{- if .Tags.ISOSpeedRatings }}
-                    ISO: {{ .Tags.ISOSpeedRatings }}<br>
+                  {{- if .ISOSpeedRatings }}
+                    ISO: {{ .ISOSpeedRatings }}<br>
                   {{- end -}}
-                  {{- if .Tags.Flash }}
-                    Flash: {{ .Tags.Flash }}<br>
+                  {{- if .Flash }}
+                    Flash: {{ .Flash }}<br>
                   {{- end -}}
-                  {{- if .Tags.DateTime }}
-                    Date and Time Taken: {{ .Tags.DateTime }}<br>
+                  {{- if .DateTime }}
+                    Date and Time Taken: {{ .DateTime }}<br>
                   {{- end -}}
-		  {{ if and .Tags.GPSLatitude .Tags.GPSLongitude }}
+		  {{ if and .GPSLatitude .GPSLongitude }}
                     {{- $latSign := 1 -}}
-                    {{- if eq .Tags.LatRef "S" }}{{ $latSign = -1 }}{{ end -}}
+                    {{- if eq .GPSLatitudeRef "S" }}{{ $latSign = -1 }}{{ end -}}
                     {{- $lonSign := 1 -}}
-                    {{- if eq .Tags.LonRef "W" }}{{ $lonSign = -1 }}{{ end -}}
-                    {{- $lat := mul $latSign (add (index .Tags.GPSLatitude 0) (add (div (index .Tags.GPSLatitude 1) 60) (div (index .Tags.GPSLatitude 2) 3600))) -}}
-                    {{- $lon := mul $lonSign (add (index .Tags.GPSLongitude 0) (add (div (index .Tags.GPSLongitude 1) 60) (div (index .Tags.GPSLongitude 2) 3600))) -}}
+                    {{- if eq .GPSLongitudeRef "W" }}{{ $lonSign = -1 }}{{ end -}}
+                    {{- $lat := mul $latSign (add (index .GPSLatitude 0) (add (div (index .GPSLatitude 1) 60) (div (index .GPSLatitude 2) 3600))) -}}
+                    {{- $lon := mul $lonSign (add (index .GPSLongitude 0) (add (div (index .GPSLongitude 1) 60) (div (index .GPSLongitude 2) 3600))) -}}
                     <!-- a href="http://www.openstreetmap.org/?mlat={{ $lat }}&mlon={{ $lon }}&zoom=16&layers=M"-->GPS Position: {{ $lat }} {{ $lon }}<!-- /a -->
                   {{- end -}}
 	        {{- end -}}
