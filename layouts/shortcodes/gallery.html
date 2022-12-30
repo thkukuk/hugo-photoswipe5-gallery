@@ -5,36 +5,101 @@ Documentation and licence at https://github.com/thkukuk/hugo-easy-gallery/
 <!-- count how many times we've called this shortcode; load the css if it's the first time -->
 {{- if not ($.Page.Scratch.Get "figurecount") -}}<link rel="stylesheet" href={{ "assets/css/hugo-easy-gallery.css" | relURL }}>{{- end }}
 {{- $.Page.Scratch.Add "figurecount" 1 -}}
-{{- $baseURL := .Site.BaseURL -}}
+{{- $currentPage := . -}}
 {{- $thumbnailSize := .Get "thumbnail-size" | default "300x300" -}}
+{{- $images := (.Page.Resources.ByType "image") -}}
+{{- if .Get "match" }}{{ $images = (.Page.Resources.Match (.Get "match")) }}{{ end -}}
+{{- $sortOrder := .Get "sort" | default (.Site.Params.Gallery.Sort | default "asc") -}}
+{{- $siteUseExif := .Site.Params.Gallery.UseExif -}}
+
 <div class="gallery caption-position-{{ with .Get "caption-position" | default "bottom" }}{{.}}{{end}} caption-effect-{{ with .Get "caption-effect" | default "slide" }}{{.}}{{end}} hover-effect-{{ with .Get "hover-effect" | default "zoom" }}{{.}}{{end}} {{ if ne (.Get "hover-transition") "none" }}hover-transition{{end}}" itemscope itemtype="http://schema.org/ImageGallery">
-    <div class="pswp-gallery pswp-gallery--single-column" id="photoswipe5-gallery">
-    {{- with .Inner -}}
-        <!-- Include any figure shortcodes called within the gallery -->
-        {{ . }}
-    {{- else -}}
-        <!-- Generate figures for all page resources of type image. -->
-	{{- range $.Page.Resources.ByType "image" }}
-	    {{- $thumbnail := .Fill $thumbnailSize -}}
-            <div class="box" style="max-width: {{ .Width }}px;">
-            <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-                <div class="img" style="background-image: url('{{ $thumbnail.RelPermalink }}'); background-repeat:no-repeat;" >
-                    <a href="{{ .RelPermalink }}"
-                        data-pswp-width="{{ .Width }}"
-                        data-pswp-height="{{ .Height }}"
-                        target="_blank">
-                        <img src="{{- $thumbnail.RelPermalink -}}" width="{{ $thumbnail.Width }}" height="{{ $thumbnail.Height }}" alt="{{ .Title }}">
-			<span class="pswp-caption-content">{{ .Title }}</span>
-                    </a>
-                    {{- with .Title }}
-                    <figcaption>
-                        <p>{{ . }}</p>
-                    </figcaption>
-                    {{- end }}
-                </div>
-            </figure>
-            </div>
-	{{end }}
-    {{- end }}
-    </div>
+  <div class="pswp-gallery pswp-gallery--single-column" id="photoswipe5-gallery">
+  {{- with .Inner -}}
+    <!-- Include any figure shortcodes called within the gallery -->
+    {{ . }}
+  {{- else -}}
+    <!-- Generate figures for all page resources of type image. -->
+    {{- range sort $images "Name" $sortOrder }}
+
+      <!-- Get metadata from sidecar file, if present. Else an empty dictionary is used. -->
+      {{- $metaFileName := print .Name ".meta" -}}
+      {{- $metadata := $currentPage.Page.Resources.GetMatch ($metaFileName) -}}
+      {{- if $metadata -}}
+	{{- $metadata = $metadata.Content -}}
+	{{- $metadata = $metadata | unmarshal -}}
+      {{- else -}}
+	{{- $metadata = dict -}}
+      {{- end -}}
+
+      {{- $thumbnail := .Fill $thumbnailSize -}}
+      <div class="box" style="max-width: {{ .Width }}px;">
+        <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+          <div class="img" style="background-image: url('{{ $thumbnail.RelPermalink }}'); background-repeat:no-repeat;" >
+            <a href="{{ .RelPermalink }}" data-pswp-width="{{ .Width }}"
+               data-pswp-height="{{ .Height }}" target="_blank">
+              <img src="{{- $thumbnail.RelPermalink -}}" width="{{ $thumbnail.Width }}" height="{{ $thumbnail.Height }}" alt="{{ .Title }}">
+              {{ if or $currentPage.Page.Params.UseExif (and (eq $currentPage.Page.Params.UseExif nil) $siteUseExif) -}}
+	      <!-- merge Exif informations together with the metadata from the file -->
+		{{- with .Exif -}}
+		  {{ $metadata = merge .Tags $metadata }}
+		{{- end -}}
+              {{- end -}}
+              <span class="pswp-caption-content">
+                {{ $metadata.Caption | default ( $metadata.ImageDescription | default .Title) -}}<br>
+              {{- if or $currentPage.Page.Params.UseExif (and (eq $currentPage.Page.Params.UseExif nil) $siteUseExif) -}}
+                {{- with $metadata }}
+                  {{- if .Make }}
+                    Camera Maker: {{ .Make }}<br>
+                  {{- end -}}
+                  {{- if .Model }}
+                    Camera Model: {{ .Model }}<br>
+                  {{- end -}}
+                  {{- with .LensModel }}
+                    Lens Model: {{ . }}<br>
+                  {{- end -}}
+                  {{- if .FocalLength }}
+                    Focal Length: {{ .FocalLength }}mm<br>
+                  {{- end -}}
+                  {{- if .ExposureTime }}
+                    Exposure Time: {{ .ExposureTime }}<br>
+                  {{- end -}}
+                  {{- if .FNumber }}
+                    Aperture: f/{{ .FNumber }}<br>
+                  {{- end -}}
+                  {{- if .ISOSpeedRatings }}
+                    ISO: {{ .ISOSpeedRatings }}<br>
+                  {{- end -}}
+                  {{- if .Flash }}
+                    Flash: {{ .Flash }}<br>
+                  {{- end -}}
+                  {{- if .DateTime }}
+                    Date and Time Taken: {{ .DateTime }}<br>
+                  {{- end -}}
+                  {{ if and .GPSLatitude .GPSLongitude }}
+                    {{- $latSign := 1 -}}
+                    {{- if eq .GPSLatitudeRef "S" }}{{ $latSign = -1 }}{{ end -}}
+                    {{- $lonSign := 1 -}}
+                    {{- if eq .GPSLongitudeRef "W" }}{{ $lonSign = -1 }}{{ end -}}
+                    {{- $lat := mul $latSign (add (index .GPSLatitude 0) (add (div (index .GPSLatitude 1) 60) (div (index .GPSLatitude 2) 3600))) -}}
+	            {{/* - $lon := mul $lonSign (add (index .GPSLongitude 0) (add (div (index .GPSLongitude 1) 60) (div (index .GPSLongitude 2) 3600))) - */}}
+		    {{ $lon := 1 }}
+                    <!-- a href="http://www.openstreetmap.org/?mlat={{ $lat }}&mlon={{ $lon }}&zoom=16&layers=M"-->
+		    GPS Position: {{ .GPSLatitudeRef }}{{ .GPSLatitude }} {{ .GPSLongitudeRef }}{{ .GPSLongitude }}
+                    <!-- /a -->
+                  {{- end -}}
+                {{- end -}}
+              {{- end }}
+              </span>
+            </a>
+          </div>
+          {{- with .Title }}
+          <figcaption>
+            <p>{{ . }}</p>
+          </figcaption>
+          {{- end }}
+        </figure>
+      </div>
+    {{- end -}}
+  {{- end }}
+  </div>
 </div>
