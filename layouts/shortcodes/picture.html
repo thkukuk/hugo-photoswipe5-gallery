@@ -4,7 +4,7 @@ Documentation and licence at https://github.com/liwenyip/hugo-easy-gallery/
 <!-- count how many times we've called this shortcode; load the css if it's the first time -->
 {{- if not ($.Page.Scratch.Get "figurecount") }}<link rel="stylesheet" href={{ "assets/css/hugo-easy-gallery.css" | relURL }} />{{ end }}
 {{- $.Page.Scratch.Add "figurecount" 1 -}}
-{{- $image := .Page.Resources.GetMatch (printf "**%s*" (.Get "src")) -}}
+{{- $image := .Page.Resources.GetMatch (printf "**%s" (.Get "src")) -}}
 <!-- Get metadata from sidecar file, if present. Else an empty dictionary is used. -->
 {{- $metaFileName := print $image.Name ".meta" -}}
 {{- $metadata := .Page.Resources.GetMatch ($metaFileName) -}}
