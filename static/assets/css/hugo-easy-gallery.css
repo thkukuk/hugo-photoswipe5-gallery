@@ -151,8 +151,23 @@ figcaption styles
 .fancy-figure.caption-effect-slide.caption-position-center figure:not(:hover) figcaption  {
     top: 100%;
 }
-figcaption p {
-    margin: auto; /* override style in theme */
+.gallery figcaption p {
+    font-size: 1em;
+    font-weight: normal;
+    text-align: center;
+    margin: auto; 
+    line-height: 1.5em;
+    letter-spacing: normal;
+}
+
+/* handle h4 like p */
+.gallery figcaption h4 {
+    font-size: 1em;
+    font-weight: normal;
+    text-align: center;
+    margin: auto;
+    line-height: 1.5em;
+    letter-spacing: normal;
 }
 
 /* 
