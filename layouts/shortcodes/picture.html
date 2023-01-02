@@ -69,7 +69,7 @@ Documentation and licence at https://github.com/liwenyip/hugo-easy-gallery/
                     Flash: {{ .Flash }}<br>
                   {{- end -}}
                   {{- if .DateTime }}
-                    Date and Time Taken: {{ .DateTime }}<br>
+                    Date and Time Taken: {{ .DateTime.Format "02 January 2006 15:04:05 MST" }}<br>
                   {{- end -}}
 		  {{ if and .GPSLatitude .GPSLongitude }}
                     {{- $latSign := 1 -}}
