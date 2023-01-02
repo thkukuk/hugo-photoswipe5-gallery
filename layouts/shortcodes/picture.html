@@ -14,7 +14,7 @@ Documentation and licence at https://github.com/liwenyip/hugo-easy-gallery/
 {{- else -}}
   {{- $metadata = dict -}}
 {{- end -}}
-
+{{- $caption := .Get "caption" | default ($metadata.Caption | default $metadata.ImageDescription) -}}
 {{- $thumbnailSize := .Get "thumbnail-size" | default "300x300" -}}
 {{- $thumbnail := $image.Fill $thumbnailSize -}}
 <div class="box{{ with .Get "caption-position" }} fancy-figure caption-position-{{.}}{{end}}{{ with .Get "caption-effect" }} caption-effect-{{.}}{{end}}" {{ with .Get "width" }}style="max-width:{{.}}"{{end}}>
@@ -28,7 +28,7 @@ Documentation and licence at https://github.com/liwenyip/hugo-easy-gallery/
          {{- with .Get "target" }} target="{{ . }}"{{ end }}
          {{- with .Get "rel" }} rel="{{ . }}"{{ end }}
          itemprop="contentUrl">
-        <img itemprop="thumbnail" src="{{- $thumbnail.RelPermalink -}}" width="{{ $thumbnail.Width }}" height="{{ $thumbnail.Height }}" alt="{{ .Get "alt" | default (.Get "title") }}">
+         <img itemprop="thumbnail" src="{{- $thumbnail.RelPermalink -}}" width="{{ $thumbnail.Width }}" height="{{ $thumbnail.Height }}" alt="{{ .Get "alt" | default (.Get "title") }}">
           {{ if or .Page.Params.UseExif (and (eq .Page.Params.UseExif nil) .Site.Params.Gallery.UseExif) -}}
              <!-- merge Exif informations together with the metadata from the file -->
              {{- with $image.Exif -}}
@@ -36,8 +36,13 @@ Documentation and licence at https://github.com/liwenyip/hugo-easy-gallery/
              {{- end -}}
           {{- end -}}
             <span class="pswp-caption-content">
-              {{- .Get "caption" | default ($metadata.Caption | default $metadata.ImageDescription) -}}<br>
+              {{- with .Get "title" }}{{ . }}{{ end }}
+              {{- if $caption -}}
+                {{- if .Get "title" }}<br>{{ end }}
+                {{- $caption | safeHTML -}}
+              {{- end -}}
 	      {{ if or .Page.Params.UseExif (and (eq .Page.Params.UseExif nil) .Site.Params.Gallery.UseExif) -}}
+                {{- if or $caption (.Get "title") }}<br><br>{{ end -}}
 	        {{- with $metadata }}
 	          {{- if .Make }}
                     Camera Maker: {{ .Make }}<br>
