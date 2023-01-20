@@ -9,9 +9,8 @@ Grid Layout Styles
 */
 .gallery {
     overflow: hidden;
-    /* margin: 10px; */
-    /* max-width: 768px; */
 }
+
 .gallery .box {
     float: left;
     position: relative;
@@ -168,6 +167,21 @@ figcaption styles
     margin: auto;
     line-height: 1.5em;
     letter-spacing: normal;
+}
+
+/* Adjustemens for standalone picture */
+.box a {
+    border-bottom: none;
+    padding-bottom: 0px;
+}
+
+.box figure {
+    left: 5px;
+    right: 5px;
+    top: 5px;
+    bottom: 5px;
+    overflow: auto;
+    margin: 0px;
 }
 
 /* 
