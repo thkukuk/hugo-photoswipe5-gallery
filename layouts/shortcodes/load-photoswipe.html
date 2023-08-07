@@ -14,7 +14,7 @@ import PhotoSwipeDynamicCaption from '/assets/photoswipe-dynamic-caption-plugin/
 
 const lightbox = new PhotoSwipeLightbox({
   gallery: '#photoswipe5-gallery',
-  children: 'a',
+  childSelector: '.pswp-gallery__item',
   pswpModule: () => import('/assets/photoswipe5/photoswipe.esm.js'),
   bgOpacity: 0.95,
   loop: false,

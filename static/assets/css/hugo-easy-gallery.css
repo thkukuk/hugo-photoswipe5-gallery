@@ -44,7 +44,7 @@ Grid Layout Styles
 Transition styles
 */
 .gallery.hover-transition figure,
-.gallery.hover-effect-zoom .img,
+.gallery.hover-effect-zoom .pswp-gallery__item,
 .gallery:not(.caption-effect-appear) figcaption,
 .fancy-figure:not(.caption-effect-appear) figcaption {
     -webkit-transition: all 0.3s ease-in-out;
@@ -81,7 +81,7 @@ figure styles
 img / a styles
 */
 
-.gallery .img {
+.gallery .pswp-gallery__item {
     position: absolute;
     left: 0;
     right: 0;
@@ -91,7 +91,7 @@ img / a styles
     background-position: 50% 50%;
     background-repeat: no-repeat;
 }
-.gallery.hover-effect-zoom figure:hover .img {
+.gallery.hover-effect-zoom figure:hover .pswp-gallery__item {
     transform: scale(1.05);
 }
 .gallery img {
@@ -180,7 +180,6 @@ figcaption styles
     right: 5px;
     top: 5px;
     bottom: 5px;
-    overflow: auto;
     margin: 0px;
 }
 

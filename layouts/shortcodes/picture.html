@@ -19,7 +19,7 @@ Documentation and licence at https://github.com/liwenyip/hugo-easy-gallery/
 {{- $thumbnail := $image.Fill $thumbnailSize -}}
 <div class="box{{ with .Get "caption-position" }} fancy-figure caption-position-{{.}}{{end}}{{ with .Get "caption-effect" }} caption-effect-{{.}}{{end}}" {{ with .Get "width" }}style="max-width:{{.}}"{{end}}>
   <figure {{ with .Get "class" }}class="{{.}}"{{ end }} itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-    <div class="img" style="background-image: url('{{ $thumbnail.RelPermalink }}');
+    <div class="pswp-gallery__item" style="background-image: url('{{ $thumbnail.RelPermalink }}');
                             background-repeat: no-repeat;
                             background-size: {{ $thumbnail.Width }}px {{ $thumbnail.Height }}px" >
       <a href="{{ .Get "link" | default $image.RelPermalink }}"
@@ -29,65 +29,68 @@ Documentation and licence at https://github.com/liwenyip/hugo-easy-gallery/
          {{- with .Get "rel" }} rel="{{ . }}"{{ end }}
          itemprop="contentUrl">
          <img itemprop="thumbnail" src="{{- $thumbnail.RelPermalink -}}" width="{{ $thumbnail.Width }}" height="{{ $thumbnail.Height }}" alt="{{ .Get "alt" | default (.Get "title") }}">
-          {{ if or .Page.Params.UseExif (and (eq .Page.Params.UseExif nil) .Site.Params.Gallery.UseExif) -}}
-             <!-- merge Exif informations together with the metadata from the file -->
-             {{- with $image.Exif -}}
-               {{ $metadata = merge .Tags $metadata }}
-             {{- end -}}
-          {{- end -}}
-            <span class="pswp-caption-content">
-              {{- with .Get "title" }}{{ . }}{{ end }}
-              {{- if $caption -}}
-                {{- if .Get "title" }}<br>{{ end }}
-                {{- $caption | safeHTML -}}
-              {{- end -}}
-	      {{ if or .Page.Params.UseExif (and (eq .Page.Params.UseExif nil) .Site.Params.Gallery.UseExif) -}}
-                {{- if or $caption (.Get "title") }}<br><br>{{ end -}}
-	        {{- with $metadata }}
-	          {{- if .Make }}
-                    Camera Maker: {{ .Make }}<br>
-                  {{- end -}}
-	          {{- if .Model }}
-                    Camera Model: {{ .Model }}<br>
-                  {{- end -}}
-	          {{- with .LensModel }}
-                    Lens Model: {{ . }}<br>
-                  {{- end -}}
-                  {{- if .FocalLength }}
-                    Focal Length: {{ .FocalLength }}mm<br>
-                  {{- end -}}
-                  {{- if .ExposureTime }}
-                    Exposure Time: {{ .ExposureTime }}<br>
-                  {{- end -}}
-                  {{- if .FNumber }}
-                    Aperture: f/{{ .FNumber }}<br>
-                  {{- end -}}
-                  {{- if .ISOSpeedRatings }}
-                    ISO: {{ .ISOSpeedRatings }}<br>
-                  {{- end -}}
-                  {{- if .Flash }}
-                    Flash: {{ .Flash }}<br>
-                  {{- end -}}
-                  {{- if .DateTime }}
-                    Date and Time Taken: {{ .DateTime.Format "02 January 2006 15:04:05 MST" }}<br>
-                  {{- end -}}
-		  {{ if and .GPSLatitude .GPSLongitude }}
-                    {{- $latSign := 1 -}}
-                    {{- if eq .GPSLatitudeRef "S" }}{{ $latSign = -1 }}{{ end -}}
-                    {{- $lonSign := 1 -}}
-                    {{- if eq .GPSLongitudeRef "W" }}{{ $lonSign = -1 }}{{ end -}}
-                    {{- $lat := mul $latSign (add (index .GPSLatitude 0) (add (div (index .GPSLatitude 1) 60) (div (index .GPSLatitude 2) 3600))) -}}
-                    {{- $lon := mul $lonSign (add (index .GPSLongitude 0) (add (div (index .GPSLongitude 1) 60) (div (index .GPSLongitude 2) 3600))) -}}
-                    <!-- a href="http://www.openstreetmap.org/?mlat={{ $lat }}&mlon={{ $lon }}&zoom=16&layers=M"-->GPS Position: {{ $lat }} {{ $lon }}<!-- /a -->
-                  {{- end -}}
-	        {{- end -}}
-              {{- end -}}
-            </span>
       </a>
+      {{ if or .Page.Params.UseExif (and (eq .Page.Params.UseExif nil) .Site.Params.Gallery.UseExif) -}}
+        <!-- merge Exif informations together with the metadata from the file -->
+        {{- with $image.Exif -}}
+          {{ $metadata = merge .Tags $metadata }}
+        {{- end -}}
+      {{- end -}}
+      <span class="pswp-caption-content">
+        {{ $metadata.Title | default (.Get "title") }}<br>
+          {{- if $caption -}}
+            {{- $caption | safeHTML -}}<br>
+          {{- end -}}
+	  {{ if or .Page.Params.UseExif (and (eq .Page.Params.UseExif nil) .Site.Params.Gallery.UseExif) -}}
+          <br>
+	  {{- with $metadata }}
+	    {{- if .Make }}
+              Camera Maker: {{ .Make }}<br>
+            {{- end -}}
+	    {{- if .Model }}
+              Camera Model: {{ .Model }}<br>
+            {{- end -}}
+	    {{- with .LensModel }}
+              Lens Model: {{ . }}<br>
+            {{- end -}}
+            {{- if .FocalLength }}
+              Focal Length: {{ .FocalLength }}mm<br>
+            {{- end -}}
+            {{- if .ExposureTime }}
+              Exposure Time: {{ .ExposureTime }}<br>
+            {{- end -}}
+            {{- if .FNumber }}
+              Aperture: f/{{ .FNumber }}<br>
+            {{- end -}}
+            {{- if .ISOSpeedRatings }}
+              ISO: {{ .ISOSpeedRatings }}<br>
+            {{- end -}}
+            {{- if .Flash }}
+              Flash: {{ .Flash }}<br>
+            {{- end -}}
+            {{- if .DateTime }}
+              Date and Time Taken: {{ .DateTime.Format "02 January 2006 15:04:05 MST" }}<br>
+            {{- end -}}
+	  {{- end -}}
+          {{- with $image.Exif -}}
+            {{ if and .Lat .Long }}
+              {{- $lat := (float .Lat) -}}
+              {{- $LatitudeRef := "N" }}
+              {{- if lt $lat 0.0 }}{{ $LatitudeRef = "S" }}{{ $lat = mul $lat -1 }} {{ end -}}
+              {{- $lon := (float .Long) -}}
+              {{- $LongitudeRef := "O" }}
+              {{- if lt $lon 0.0 }}{{ $LongitudeRef = "W" }}{{ $lon = mul $lon -1 }} {{ end -}}
+              <a href="http://www.openstreetmap.org/?mlat={{ .Lat }}&mlon={{ .Long }}&zoom=16&layers=M" target="_blank">
+                GPS: {{ $LatitudeRef }} {{ $lat | lang.FormatNumber 7 }} {{ $LongitudeRef }} {{ $lon | lang.FormatNumber 7 }}
+              </a>
+            {{- end -}}
+          {{- end -}}
+        {{- end -}}
+      </span>
     </div>
-    {{- if or (or (.Get "title") (.Get "caption")) (.Get "attr")}}
+    {{- if or $metadata.Title (or (or (.Get "title") (.Get "caption")) (.Get "attr"))}}
     <figcaption>
-      {{- with .Get "title" }}<h4>{{.}}</h4>{{ end }}
+      {{- if or (or $metadata.Title (.Get "title"))  }}<h4>{{ (.Get "title") | default $metadata.Title }}</h4>{{ end }}
       {{- if or (.Get "caption") (.Get "attr")}}
         <p>
           {{- .Get "caption" -}}
