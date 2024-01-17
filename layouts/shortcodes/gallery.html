@@ -9,6 +9,7 @@ Documentation and licence at https://github.com/thkukuk/hugo-easy-gallery/
 {{- $thumbnailSize := .Get "thumbnail-size" | default "300x300" -}}
 {{- $images := (.Page.Resources.ByType "image") -}}
 {{- if .Get "match" }}{{ $images = (.Page.Resources.Match (.Get "match")) }}{{ end -}}
+{{ if .Get "path" }}{{ $path := printf "%s/*" (.Get "path") }}{{ $images = (.Page.Resources.Match $path) }}{{ end }}
 {{- $sortOrder := .Get "sort" | default (.Site.Params.Gallery.Sort | default "asc") -}}
 {{- $siteUseExif := .Site.Params.Gallery.UseExif -}}
 
