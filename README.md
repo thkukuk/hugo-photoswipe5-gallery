@@ -149,7 +149,7 @@ Here are some pointers if you want to adapt the CSS:
 
 ## Issues
 
-I've tested this with my [hugo-personal-home](https://github.com/thkukuk/hugo-pesonal-home/) theme. If things don't work properly with other themes, raise an issue on GitHub, or even better fix the issue and submit a pull request :-)
+I've tested this with my [hugo-pure-personal](https://github.com/thkukuk/hugo-pure-pesonal/) theme. If things don't work properly with other themes, raise an issue on GitHub, or even better fix the issue and submit a pull request :-)
 
 ## Credits
 
