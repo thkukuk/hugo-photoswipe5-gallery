@@ -50,7 +50,7 @@ Specifying your image files:
 
 Optional parameters:
 
-* All the [features/parameters](https://gohugo.io/extras/shortcodes) of Hugo's built-in `figure` shortcode work as normal, i.e. src, link, title, caption, class, attr (attribution), attrlink, alt
+* Most of the [features/parameters](https://gohugo.io/extras/shortcodes) of Hugo's built-in `figure` shortcode work as normal, i.e. src, title, caption, class, attr (attribution), attrlink, alt
 * `thumbnail-size` sets the size of the thumbnail. Default is "300x300". First number is width, second number is height.
   * example: `{{< picture src="image.jpg" thumbnail-size="150x150" />}}`
 
@@ -136,7 +136,7 @@ The metadata embedded in an image can be extended or overwritten by a metadata s
 
 * Call `{{< load-photoswipe >}}` **once** on each page where you want to use PhotoSwipe.
 * It doesn't matter where on the page.
-* If you don't load PhotoSwipe, each figure will instead have a good ol' fashioned hyperlink to a bigger image (or - if you haven't specified a bigger image - the same one).
+* If you don't load PhotoSwipe, each figure will instead have a good old fashioned hyperlink to a bigger image (or - if you haven't specified a bigger image - the same one).
 
 ## CSS Hackers
 

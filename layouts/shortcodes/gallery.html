@@ -11,9 +11,10 @@ Documentation and licence at https://github.com/thkukuk/hugo-photoswipe5-gallery
 {{- if .Get "match" }}{{ $images = (.Page.Resources.Match (.Get "match")) }}{{ end -}}
 {{- $sortOrder := .Get "sort" | default (.Site.Params.Gallery.Sort | default "asc") -}}
 {{- $siteUseExif := .Site.Params.Gallery.UseExif -}}
+{{- $.Page.Scratch.Add "insideGallery" 1 -}}
 
 <div class="gallery caption-position-{{ with .Get "caption-position" | default "bottom" }}{{.}}{{end}} caption-effect-{{ with .Get "caption-effect" | default "slide" }}{{.}}{{end}} hover-effect-{{ with .Get "hover-effect" | default "zoom" }}{{.}}{{end}} {{ if ne (.Get "hover-transition") "none" }}hover-transition{{end}}" itemscope itemtype="http://schema.org/ImageGallery">
-  <div class="pswp-gallery pswp-gallery--single-column" id="photoswipe5-gallery">
+  <div class="pswp-gallery" id="photoswipe5-gallery">
   {{- with .Inner -}}
     <!-- Include any figure shortcodes called within the gallery -->
     {{ . }}
@@ -107,3 +108,4 @@ Documentation and licence at https://github.com/thkukuk/hugo-photoswipe5-gallery
   {{- end }}
   </div>
 </div>
+{{- $.Page.Scratch.Delete "insideGallery" -}}
