@@ -33,13 +33,13 @@ This theme can create a gallery of all images in a [page bundle](https://gohugo.
 Check out this repo into your `themes/` folder:
 
 ```
-git submodule add git@github.com:thkukuk/hugo-photoshop5-gallery.git themes/hugo-photoshop5-gallery
+git submodule add git@github.com:thkukuk/hugo-photoswipe5-gallery.git themes/hugo-photoswipe5-gallery
 ```
 
 Then update your `./config.toml` to load the theme, for example:
 
 ```
-theme = ["hugo-main-theme", "hugo-photoshop5-gallery"]
+theme = ["hugo-main-theme", "hugo-photoswipe5-gallery"]
 ```
 
 ## `{{< picture >}}` shortcode usage
