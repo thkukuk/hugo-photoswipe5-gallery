@@ -9,13 +9,14 @@ Documentation and licence at https://github.com/thkukuk/hugo-photoswipe5-gallery
 
 <!-- Photoswipe css/js libraries -->
 <script type="module">
-import PhotoSwipeLightbox from {{ '/assets/photoswipe5/photoswipe-lightbox.esm.js' | relURL }};
-import PhotoSwipeDynamicCaption from {{ '/assets/photoswipe-dynamic-caption-plugin/photoswipe-dynamic-caption-plugin.esm.js' | relURL }};
+  <!-- {{baseURL}} -->
+import PhotoSwipeLightbox from {{ 'assets/photoswipe5/photoswipe-lightbox.esm.js' | relURL }};
+import PhotoSwipeDynamicCaption from {{ 'assets/photoswipe-dynamic-caption-plugin/photoswipe-dynamic-caption-plugin.esm.js' | relURL }};
 
 const lightbox = new PhotoSwipeLightbox({
   gallery: '#photoswipe5-gallery',
   childSelector: '.pswp-gallery__item',
-  pswpModule: () => import({{ '/assets/photoswipe5/photoswipe.esm.js' | relURL }}),
+  pswpModule: () => import({{ 'assets/photoswipe5/photoswipe.esm.js' | relURL }}),
   bgOpacity: 0.95,
   loop: false,
 });
@@ -27,6 +28,6 @@ const captionPlugin = new PhotoSwipeDynamicCaption(lightbox, {
 });
 </script>
 
-<link rel="stylesheet" href={{ "/assets/photoswipe5/photoswipe.css"  | relURL }}>
-<link rel="stylesheet" href={{ "/assets/photoswipe-dynamic-caption-plugin/photoswipe-dynamic-caption-plugin.css" | relURL }}>
+<link rel="stylesheet" href={{ "assets/photoswipe5/photoswipe.css"  | relURL }}>
+<link rel="stylesheet" href={{ "assets/photoswipe-dynamic-caption-plugin/photoswipe-dynamic-caption-plugin.css" | relURL }}>
 {{ end -}}
