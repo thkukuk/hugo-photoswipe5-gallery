@@ -1,6 +1,6 @@
 # hugo-photoswipe5-gallery
 
-This is an automagical css image gallery theme for [Hugo](https://gohugo.io/) using shortcodes, with an optional lightbox/carousel gadget. For this [PhotoSwipe 5.3.x](http://photoswipe.com/) and [Dynamic caption plugin](https://github.com/dimsemenov/photoswipe-dynamic-caption-plugin) are used.
+This is an automagical css image gallery theme for [Hugo](https://gohugo.io/) using shortcodes, with an optional lightbox/carousel gadget. For this [PhotoSwipe 5.4.x](http://photoswipe.com/) and [Dynamic caption plugin](https://github.com/dimsemenov/photoswipe-dynamic-caption-plugin) are used.
 
 This theme can create a gallery of all images in a [page bundle](https://gohugo.io/content-management/page-bundles/). It uses [Hugo Page Resources](https://gohugo.io/content-management/page-resources/), which allows to create thumbnails on the fly, with a configurable thumbnail size.
 
