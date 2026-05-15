@@ -1,0 +1,106 @@
+/* Mobile fixes for photoswipe5 gallery */
+
+/* Fix image positioning on mobile to account for caption */
+@media only screen and (max-width: 768px) {
+  /* Adjust the main container to leave space for caption */
+  .pswp__scroll-wrap {
+    padding-bottom: 80px !important; /* Reserve space for caption */
+  }
+
+  /* Ensure images are properly centered with caption space */
+  .pswp__item {
+    padding-bottom: 80px !important;
+  }
+
+  /* Make sure caption stays at the bottom and is always visible */
+  .pswp__dynamic-caption--mobile {
+    position: fixed !important;
+    bottom: 0 !important;
+    top: auto !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    background: rgba(0, 0, 0, 0.8) !important;
+    padding: 15px !important;
+    z-index: 10001 !important; /* Above everything else */
+    max-height: 80px;
+    overflow-y: auto;
+  }
+
+  /* Make navigation arrows visible and usable on mobile */
+  .pswp--touch .pswp__button--arrow {
+    visibility: visible !important;
+    opacity: 0.7;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+  }
+
+  /* Adjust arrow positioning for better mobile visibility */
+  .pswp__button--arrow {
+    width: 60px !important;
+    height: 80px !important;
+    margin-top: -40px !important;
+  }
+
+  /* Make arrows more visible on tap */
+  .pswp__button--arrow:active {
+    opacity: 1 !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+  }
+
+  /* Ensure proper viewport height calculation */
+  .pswp {
+    height: 100vh !important;
+    height: 100dvh !important; /* Use dynamic viewport height if supported */
+  }
+
+  /* Adjust zoom wrap to account for caption space */
+  .pswp__zoom-wrap {
+    max-height: calc(100vh - 80px) !important;
+    max-height: calc(100dvh - 80px) !important;
+  }
+
+  /* Center images vertically in available space */
+  .pswp__img {
+    object-fit: contain !important;
+    max-height: calc(100vh - 80px) !important;
+    max-height: calc(100dvh - 80px) !important;
+  }
+}
+
+/* Extra small screens (phones in portrait) */
+@media only screen and (max-width: 480px) {
+  /* Reduce arrow size on very small screens */
+  .pswp__button--arrow {
+    width: 50px !important;
+    height: 70px !important;
+    margin-top: -35px !important;
+  }
+
+  .pswp__button--arrow .pswp__icn {
+    width: 40px !important;
+    height: 40px !important;
+    margin-top: -20px !important;
+  }
+}
+
+/* Landscape mode on mobile */
+@media only screen and (max-width: 896px) and (orientation: landscape) {
+  /* Reduce caption size in landscape */
+  .pswp__dynamic-caption--mobile {
+    padding: 8px 15px !important;
+    max-height: 60px;
+    font-size: 0.9em;
+  }
+
+  .pswp__scroll-wrap,
+  .pswp__item {
+    padding-bottom: 60px !important;
+  }
+
+  .pswp__zoom-wrap,
+  .pswp__img {
+    max-height: calc(100vh - 60px) !important;
+    max-height: calc(100dvh - 60px) !important;
+  }
+}
